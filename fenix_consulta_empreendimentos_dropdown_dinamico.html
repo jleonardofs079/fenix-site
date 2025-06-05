@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consulta de Empreendimentos</title>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+      color: #1a1a1a;
+    }
+    h1 {
+      color: #800000;
+    }
+    label {
+      display: block;
+      margin: 8px 0 4px;
+    }
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      background-color: #ffffff;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #000080;
+      color: #ffffff;
+    }
+    td a {
+      color: #800000;
+      text-decoration: none;
+    }
+    #map {
+      height: 400px;
+      width: 100%;
+      border: 2px solid #000080;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Consulta de Empreendimentos</h1>
+
+  <label for="cidade">Cidade:</label>
+  <select id="cidade" onchange="filtrarResultados()"><option value="">Todas</option></select>
+
+  <label for="bairro">Bairro:</label>
+  <select id="bairro" onchange="filtrarResultados()"><option value="">Todos</option></select>
+
+  <label for="construtora">Construtora:</label>
+  <select id="construtora" onchange="filtrarResultados()"><option value="">Todas</option></select>
+
+  <label for="empreendimento">Empreendimento:</label>
+  <select id="empreendimento" onchange="filtrarResultados()"><option value="">Todos</option></select>
+
+  <table id="tabela-resultados">
+    <thead>
+      <tr>
+        <th>CIDADE</th>
+        <th>BAIRRO</th>
+        <th>EMPREENDIMENTO</th>
+        <th>ENDEREÇO</th>
+        <th>COORDENADA (DEC)</th>
+        <th>CONSTRUTORA</th>
+        <th>A PARTIR DE</th>
+        <th>STATUS/LANÇAMENTO</th>
+      </tr>
+    </thead>
+    <tbody id="corpo-tabela"></tbody>
+  </table>
+
+  <div id="map"></div>
+
+  <script>
+    const empreendimentos = [
+      {cidade: "Eusébio", bairro: "Urucunema", nome: "ECO PARK", endereco: "Rua José de Alencar, 1000", coordenada: [-3.891234, -38.455678], construtora: "MRV", valor: "216032", status: "LANÇADO"},
+      {cidade: "Fortaleza", bairro: "Cambeba", nome: "FONTANA DI TERNI", endereco: "Rua Fausto Aguiar, 927", coordenada: [-3.789012, -38.512345], construtora: "MRV", valor: "255000", status: "2026-05-01"},
+      {cidade: "Fortaleza", bairro: "Barra do Ceará", nome: "PORTO DAS MARÉS", endereco: "Av. Vinte de Janeiro, 100", coordenada: [-3.715678, -38.567890], construtora: "MRV", valor: "268990", status: "2025-12-01"},
+      {cidade: "Fortaleza", bairro: "Jangurussu", nome: "RECANTO DAS PALMEIRAS", endereco: "Rua Francisco Lima e Silva, 399", coordenada: [-3.812345, -38.543210], construtora: "MRV", valor: "225102", status: "2025-12-01"},
+      {cidade: "Fortaleza", bairro: "Cocó", nome: "RESERVA BRISA DO MAR", endereco: "Rua dos Cajueiros, 450", coordenada: [-3.732456, -38.489123], construtora: "MRV", valor: "309990", status: "2026-01-01"}
+    ];
+
+    const mapa = L.map('map').setView([-3.75, -38.5], 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
+    }).addTo(mapa);
+
+    let marcadores = [];
+
+    function preencherDropdowns() {
+      const campos = ['cidade', 'bairro', 'construtora', 'empreendimento'];
+      campos.forEach(campo => {
+        const valores = [...new Set(empreendimentos.map(e => e[campo === 'empreendimento' ? 'nome' : campo]))].sort();
+        const select = document.getElementById(campo);
+        valores.forEach(valor => {
+          const option = document.createElement('option');
+          option.value = valor;
+          option.textContent = valor;
+          select.appendChild(option);
+        });
+      });
+    }
+
+    function filtrarResultados() {
+      const cidade = document.getElementById("cidade").value.toLowerCase();
+      const bairro = document.getElementById("bairro").value.toLowerCase();
+      const construtora = document.getElementById("construtora").value.toLowerCase();
+      const empreendimento = document.getElementById("empreendimento").value.toLowerCase();
+
+      const corpoTabela = document.getElementById("corpo-tabela");
+      corpoTabela.innerHTML = "";
+
+      marcadores.forEach(m => mapa.removeLayer(m));
+      marcadores = [];
+
+      empreendimentos.forEach(e => {
+        if (
+          (cidade === '' || e.cidade.toLowerCase() === cidade) &&
+          (bairro === '' || e.bairro.toLowerCase() === bairro) &&
+          (construtora === '' || e.construtora.toLowerCase() === construtora) &&
+          (empreendimento === '' || e.nome.toLowerCase() === empreendimento)
+        ) {
+          const linha = document.createElement("tr");
+          linha.innerHTML = `
+            <td>${e.cidade}</td>
+            <td>${e.bairro}</td>
+            <td>${e.nome}</td>
+            <td>${e.endereco}</td>
+            <td><a href='https://www.google.com/maps?q=${e.coordenada[0]},${e.coordenada[1]}' target='_blank'>${e.coordenada[0]}, ${e.coordenada[1]}</a></td>
+            <td>${e.construtora}</td>
+            <td>${e.valor}</td>
+            <td>${e.status}</td>
+          `;
+          corpoTabela.appendChild(linha);
+
+          const marcador = L.marker(e.coordenada).addTo(mapa).bindPopup(e.nome);
+          marcadores.push(marcador);
+        }
+      });
+    }
+
+    window.onload = () => {
+      preencherDropdowns();
+      filtrarResultados();
+    };
+  </script>
+</body>
+</html>
