@@ -156,7 +156,7 @@ if not df_filtrado.empty and "LATITUDE" in df_filtrado.columns and "LONGITUDE" i
         try:
             lat = float(row["LATITUDE"])
             lon = float(row["LONGITUDE"])
-            popup_text = f"{row['EMPREENDIMENTO']}<br>{row['ENDEREÇO']} - {row['CIDADE']}"
+            popup_text = f"{row['EMPREENDIMENTO']}"
             folium.Marker(
                 location=[lat, lon],
                 popup=popup_text,
