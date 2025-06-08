@@ -78,13 +78,21 @@ if not df_filtrado.empty:
 
     for _, row in df_filtrado.iterrows():
         kml_str = row.get("COORDENADA(DEC)", "")
-        match = re.search(r"<coordinates>([-\d.]+),([-\d.]+)(?:,0)?</coordinates>", kml_str)
-        if match:
-            lon, lat = float(match.group(1)), float(match.group(2))
-            popup_text = f"{row['EMPREENDIMENTO']}<br>{row['ENDEREÇO']} - {row['CIDADE']}"
-            folium.Marker(location=[lat, lon], popup=popup_text).add_to(m)
+        if "<coordinates>" in kml_str:
+            coord_match = re.search(r"<coordinates>([^<]+)</coordinates>", kml_str)
+            if coord_match:
+                parts = coord_match.group(1).strip().split(",")
+                if len(parts) >= 2:
+                    try:
+                        lon, lat = float(parts[0]), float(parts[1])
+                        popup_text = f"{row['EMPREENDIMENTO']}<br>{row['ENDEREÇO']} - {row['CIDADE']}"
+                        folium.Marker(location=[lat, lon], popup=popup_text).add_to(m)
+                    except:
+                        st.warning(f"Erro ao converter coordenadas em: {row['EMPREENDIMENTO']}")
+            else:
+                st.warning(f"Coordenada malformada em: {row['EMPREENDIMENTO']}")
         else:
-            st.warning(f"Coordenada inválida em: {row['EMPREENDIMENTO']}")
+            st.warning(f"Sem coordenada válida em: {row['EMPREENDIMENTO']}")
 
     st.write("### Mapa dos Empreendimentos Filtrados")
     st_folium(m, width=None, height=500)
