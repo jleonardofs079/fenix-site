@@ -122,7 +122,7 @@ st.markdown(
     f"""
     <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px;">
         <img src="data:image/png;base64,{habitnet_base64}" alt="Habitnet Logo" width="108" style="margin-right: 10px;">
-        <h2 style="margin: 0 auto; font-size: 22px; text-align: center;">🔍 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos</h2>
+        <h2 style="margin: 0 auto; font-size: 22px; text-align: center;; color: #9B1113">🔍 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos</h2>
         <img src="data:image/png;base64,{fenix_base64}" alt="Fênix Logo" width="81" style="margin-left: 10px;">
     </div>
     """,
