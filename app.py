@@ -123,10 +123,6 @@ if construtora != "Todas":
 if empreendimento != "Todos":
     df_filtrado = df_filtrado[df_filtrado["EMPREENDIMENTO"] == empreendimento]
 
-# Formatar ENTREGA como MM-YYYY
-if "ENTREGA" in df.columns:
-    df["ENTREGA"] = pd.to_datetime(df["ENTREGA"], errors="coerce").dt.strftime('%m/%Y')
-
 # Exibir resultados sem LATITUDE e LONGITUDE
 df_exibicao = df_filtrado.drop(columns=["LATITUDE", "LONGITUDE"], errors="ignore").copy()
 if "LINK GOOGLE MAPS" in df_exibicao.columns:
@@ -145,11 +141,8 @@ if not df_exibicao.empty:
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
 
-
 # Tabela com rolagem horizontal e vertical
-df_exibicao = df_exibicao.rename(columns={"VAGA": "GARAGEM"})
 tabela_html = df_exibicao.to_html(escape=False, index=False)
-
 st.markdown(
     '<div style="overflow-x: auto; overflow-y: auto; max-height: 500px; border: 1px solid #ccc; padding: 8px">' + tabela_html + '</div>',
     unsafe_allow_html=True
