@@ -1,16 +1,19 @@
+
 import streamlit as st
 import pandas as pd
 import folium
 from streamlit_folium import st_folium
 from streamlit.components.v1 import html
 
-# Estilos adaptáveis para modo claro e escuro
+# Aplicar estilo personalizado para fundo cinza e destaques bordô e azul marinho
 st.markdown(
     """
     <style>
-        body, .stApp {
+        body {
             background-color: #f0f0f0;
-            color: #1a237e;
+        }
+        .stApp {
+            background-color: #f0f0f0;
         }
         h1, h2, h3, h4 {
             color: #1a237e;
@@ -18,32 +21,16 @@ st.markdown(
         .stSelectbox label, .stDataFrameContainer {
             color: #3e2723;
         }
+        .css-1cpxqw2, .css-1aumxhk, .css-1v3fvcr {
+            color: #7b1fa2;
+        }
         .stButton>button {
             background-color: #7b1fa2;
             color: white;
         }
         .stButton>button:hover {
             background-color: #512da8;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            body, .stApp {
-                background-color: #121212 !important;
-                color: #e0e0e0 !important;
-            }
-            h1, h2, h3, h4 {
-                color: #f0f0f0;
-            }
-            .stSelectbox label, .stDataFrameContainer {
-                color: #f0f0f0;
-            }
-            .stButton>button {
-                background-color: #bb86fc;
-                color: black;
-            }
-            .stButton>button:hover {
-                background-color: #985eff;
-            }
+            color: white;
         }
     </style>
     """,
