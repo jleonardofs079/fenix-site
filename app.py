@@ -16,13 +16,13 @@ st.markdown(
             background-color: #f0f0f0;
         }
         h1, h2, h3, h4 {
-            color: #1a237e; /* azul marinho */
+            color: #1a237e;
         }
         .stSelectbox label, .stDataFrameContainer {
-            color: #3e2723; /* tom escuro para boa leitura */
+            color: #3e2723;
         }
         .css-1cpxqw2, .css-1aumxhk, .css-1v3fvcr {
-            color: #7b1fa2; /* roxo bordô escuro */
+            color: #7b1fa2;
         }
         .stButton>button {
             background-color: #7b1fa2;
@@ -77,7 +77,8 @@ if not df_filtrado.empty:
     m = folium.Map(location=[-3.75, -38.5], zoom_start=11)
 
     for _, row in df_filtrado.iterrows():
-        kml_str = row.get("COORDENADA(DEC)", "")
+        kml_raw = row.get("COORDENADA(DEC)", "")
+        kml_str = str(kml_raw).replace("\n", "").replace("\r", "").strip()
         if "<coordinates>" in kml_str:
             coord_match = re.search(r"<coordinates>([^<]+)</coordinates>", kml_str)
             if coord_match:
