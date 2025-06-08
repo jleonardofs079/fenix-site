@@ -126,7 +126,7 @@ if empreendimento != "Todos":
 # Formatar ENTREGA como MM-YYYY
 if "ENTREGA" in df.columns:
     df["ENTREGA"] = pd.to_datetime(df["ENTREGA"], errors="coerce").dt.strftime('%d/%m/%Y')
-print(dt.strftime('%m/%Y')
+print(dt.strftime('%m/%Y'))
 
 # Exibir resultados sem LATITUDE e LONGITUDE
 df_exibicao = df_filtrado.drop(columns=["LATITUDE", "LONGITUDE"], errors="ignore").copy()
