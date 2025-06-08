@@ -15,7 +15,6 @@ st.markdown(
         }
         h1, h2, h3, h4 {
             color: #1a237e;
-            font-size: 1.2em;
         }
         .stSelectbox label, .stDataFrameContainer {
             color: #3e2723;
@@ -66,5 +65,135 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown("<h1 style='font-size:1.1em;'>🔎 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos</h1>", unsafe_allow_html=True)
-st.markdown("<h3 style='font-size:1.4em;'>🔎 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos</h3>", unsafe_allow_html=True)
+def formatar_moeda(x):
+    return f"R$ {x:,.2f}".replace(",", "v").replace(".", ",").replace("v", ".")
+
+# Carregar a base de dados com cache
+@st.cache_data(ttl=600)
+def carregar_dados():
+    return pd.read_excel("MEGATAB_EMPREEND_JUN2025vlight.xlsx")
+
+df = carregar_dados()
+
+# Padronizar nomes de colunas para evitar erros de digitação ou espaços
+df.columns = df.columns.str.strip().str.upper()
+df = df.rename(columns={"VAGA": "GARAGEM"})
+
+# Limpeza adicional para filtros
+colunas_filtro = ["CIDADE", "BAIRRO", "CONSTRUTORA", "EMPREENDIMENTO"]
+opcoes_filtro = {
+    col: sorted(df[col].dropna().unique().tolist()) for col in colunas_filtro if col in df.columns
+}
+for col in colunas_filtro:
+    if col in df.columns:
+        df[col] = df[col].astype(str).str.strip()
+
+# Verificar se as colunas LATITUDE e LONGITUDE existem
+if "LATITUDE" in df.columns and "LONGITUDE" in df.columns:
+    for coord in ["LATITUDE", "LONGITUDE"]:
+        df[coord] = pd.to_numeric(df[coord].astype(str).str.replace(",", "."), errors="coerce")
+else:
+    st.error("As colunas 'LATITUDE' e 'LONGITUDE' não foram encontradas na planilha.")
+
+# Formatar colunas de moeda
+valor_cols = ["A PARTIR DE", "PREÇOS ATÉ", "RENDA NECESSÁRIA"]
+for col in valor_cols:
+    if col in df.columns:
+        df[col] = df[col].apply(formatar_moeda)
+
+# Criar coluna VER NO MAPA com link clicável
+if "LATITUDE" in df.columns and "LONGITUDE" in df.columns:
+    df["VER NO MAPA"] = df.apply(
+        lambda row: f'<a href="https://www.google.com/maps/search/?api=1&query={row["LATITUDE"]},{row["LONGITUDE"]}" target="_blank">VER NO MAPA</a>'
+        if pd.notna(row.get("LATITUDE")) and pd.notna(row.get("LONGITUDE")) else "",
+        axis=1
+    )
+
+import base64
+
+def img_to_base64(path):
+    with open(path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode()
+
+habitnet_base64 = img_to_base64("Habitnet_hor.png")
+fenix_base64 = img_to_base64("fenix.png")
+
+st.markdown(
+    f"""
+    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px;">
+        <img src="data:image/png;base64,{habitnet_base64}" alt="Habitnet Logo" width="80" style="margin-right: 10px;">
+        <h2 style="margin: 0; font-size: 22px;">🔍 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos</h2>
+        <img src="data:image/png;base64,{fenix_base64}" alt="Fênix Logo" width="60" style="margin-left: 10px;">
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# Filtros com dropdowns
+cidade = st.selectbox("Selecione a Cidade", options=["Todas"] + opcoes_filtro.get("CIDADE", []))
+bairro = st.selectbox("Selecione o Bairro", options=["Todos"] + opcoes_filtro.get("BAIRRO", []))
+construtora = st.selectbox("Selecione a Construtora", options=["Todas"] + opcoes_filtro.get("CONSTRUTORA", []))
+empreendimento = st.selectbox("Selecione o Empreendimento", options=["Todos"] + opcoes_filtro.get("EMPREENDIMENTO", []))
+
+# Aplicar filtros
+df_filtrado = df.copy()
+if cidade != "Todas":
+    df_filtrado = df_filtrado[df_filtrado["CIDADE"] == cidade]
+if bairro != "Todos":
+    df_filtrado = df_filtrado[df_filtrado["BAIRRO"] == bairro]
+if construtora != "Todas":
+    df_filtrado = df_filtrado[df_filtrado["CONSTRUTORA"] == construtora]
+if empreendimento != "Todos":
+    df_filtrado = df_filtrado[df_filtrado["EMPREENDIMENTO"] == empreendimento]
+
+# Exibir resultados sem LATITUDE e LONGITUDE
+df_exibicao = df_filtrado.drop(columns=["LATITUDE", "LONGITUDE"], errors="ignore").copy()
+if "LINK GOOGLE MAPS" in df_exibicao.columns:
+    df_exibicao = df_exibicao.drop(columns=["LINK GOOGLE MAPS"], errors="ignore")
+
+# Formatar ENTREGA como mm/aaaa
+if "ENTREGA" in df_exibicao.columns:
+    df_exibicao["ENTREGA"] = pd.to_datetime(df_exibicao["ENTREGA"], errors="coerce").dt.strftime('%m/%Y')
+
+st.write(f"### Resultados: {len(df_exibicao)} empreendimento(s) encontrado(s)")
+
+# Botão para exportar tabela
+buffer = io.BytesIO()
+if not df_exibicao.empty:
+    df_exibicao.to_excel(buffer, index=False)
+    st.download_button(
+        label="📅 Baixar tabela em Excel",
+        data=buffer,
+        file_name="resultado_empreendimentos.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+
+# Tabela com rolagem horizontal e vertical
+tabela_html = df_exibicao.to_html(escape=False, index=False)
+
+st.markdown(
+    '<div style="overflow-x: auto; overflow-y: auto; max-height: 500px; border: 1px solid #ccc; padding: 8px">' + tabela_html + '</div>',
+    unsafe_allow_html=True
+)
+
+# Criar mapa com marcadores
+if not df_filtrado.empty and "LATITUDE" in df_filtrado.columns and "LONGITUDE" in df_filtrado.columns:
+    m = folium.Map(location=[-3.75, -38.5], zoom_start=11)
+
+    for _, row in df_filtrado.iterrows():
+        try:
+            lat = float(row["LATITUDE"])
+            lon = float(row["LONGITUDE"])
+            popup_text = f"{row['EMPREENDIMENTO']}"
+            folium.Marker(
+                location=[lat, lon],
+                popup=popup_text,
+                icon=folium.Icon(icon="glyphicon glyphicon-map-marker", prefix="glyphicon", color="red")
+            ).add_to(m)
+        except (ValueError, TypeError) as e:
+            st.warning(f"Erro ao processar coordenadas para: {row['EMPREENDIMENTO']}")
+
+    st.write("### Mapa dos Empreendimentos Filtrados")
+    st_folium(m, width=None, height=500)
+else:
+    st.info("Nenhum empreendimento com coordenadas disponíveis para exibir no mapa.")
