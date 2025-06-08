@@ -11,26 +11,26 @@ st.markdown(
     
 <style>
     body, .stApp {
-        background-color: #fafafa;
-        color: #1a237e;
-        font-family: 'Segoe UI', sans-serif;
+        background-color: #121212;
+        color: #f0f0f0;
+        font-family: 'Roboto', sans-serif;
     }
     h1, h2, h3, h4 {
-        color: #003366;
+        color: #ffffff;
     }
     .stSelectbox label, .stDataFrameContainer {
-        color: #333333;
+        color: #cccccc;
     }
     .stButton>button {
-        background-color: #0059b3;
-        color: white;
+        background-color: #bb86fc;
+        color: black;
         border-radius: 6px;
     }
     .stButton>button:hover {
-        background-color: #003366;
+        background-color: #985eff;
     }
     th {
-        background-color: #e6f2ff;
+        background-color: #1f1f1f;
     }
 </style>
 
