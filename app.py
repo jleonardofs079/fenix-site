@@ -124,10 +124,6 @@ if empreendimento != "Todos":
     df_filtrado = df_filtrado[df_filtrado["EMPREENDIMENTO"] == empreendimento]
 
 
-# Formatar coluna ENTREGA para formato 'MMM/AA' (ex: abr/27)
-if "ENTREGA" in df.columns:
-    df["ENTREGA"] = pd.to_datetime(df["ENTREGA"], errors="coerce").dt.strftime('%b/%y').str.lower()
-
 
 # Formatar ENTREGA como MM-YYYY
 if "ENTREGA" in df.columns:
