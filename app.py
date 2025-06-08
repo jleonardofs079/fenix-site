@@ -3,6 +3,7 @@ import pandas as pd
 import folium
 from streamlit_folium import st_folium
 from streamlit.components.v1 import html
+import re
 
 # Aplicar estilo personalizado para fundo cinza e destaques bordô e azul marinho
 st.markdown(
@@ -20,7 +21,7 @@ st.markdown(
         .stSelectbox label, .stDataFrameContainer {
             color: #3e2723; /* tom escuro para boa leitura */
         }
-        .css-1cpxqw2, .css-1aumxhk, .css-1v3fvcr {  /* títulos, legendas */
+        .css-1cpxqw2, .css-1aumxhk, .css-1v3fvcr {
             color: #7b1fa2; /* roxo bordô escuro */
         }
         .stButton>button {
@@ -36,8 +37,12 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Carregar a base de dados
-df = pd.read_excel("MEGATAB_EMPREEND_JUN2025vlight.xlsx")
+# Carregar a base de dados com cache
+@st.cache_data
+def carregar_dados():
+    return pd.read_excel("MEGATAB_EMPREEND_JUN2025vlight.xlsx")
+
+df = carregar_dados()
 
 # Formatar colunas de moeda
 valor_cols = ["A PARTIR DE", "PREÇOS ATÉ", "RENDA NECESSÁRIA"]
@@ -72,15 +77,16 @@ if not df_filtrado.empty:
     m = folium.Map(location=[-3.75, -38.5], zoom_start=11)
 
     for _, row in df_filtrado.iterrows():
-        if isinstance(row["COORDENADA(DEC)"], str) and "<coordinates>" in row["COORDENADA(DEC)"]:
-            try:
-                coord_text = row["COORDENADA(DEC)"].split("<coordinates>")[1].split("</coordinates>")[0]
-                lon, lat, *_ = map(float, coord_text.split(","))
-                folium.Marker(location=[lat, lon], popup=row["EMPREENDIMENTO"]).add_to(m)
-            except:
-                continue
+        kml_str = row.get("COORDENADA(DEC)", "")
+        match = re.search(r"<coordinates>([-\d.]+),([-\d.]+)(?:,0)?</coordinates>", kml_str)
+        if match:
+            lon, lat = float(match.group(1)), float(match.group(2))
+            popup_text = f"{row['EMPREENDIMENTO']}<br>{row['ENDEREÇO']} - {row['CIDADE']}"
+            folium.Marker(location=[lat, lon], popup=popup_text).add_to(m)
+        else:
+            st.warning(f"Coordenada inválida em: {row['EMPREENDIMENTO']}")
 
     st.write("### Mapa dos Empreendimentos Filtrados")
-    st_folium(m, width=700, height=500)
+    st_folium(m, width=None, height=500)
 else:
     st.info("Nenhum empreendimento com coordenadas disponíveis para exibir no mapa.")
