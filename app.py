@@ -29,7 +29,7 @@ st.markdown(
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: fixed;
+            table-layout: auto;
             word-wrap: break-word;
             white-space: nowrap;
         }
