@@ -3,7 +3,6 @@ import pandas as pd
 import folium
 from streamlit_folium import st_folium
 from streamlit.components.v1 import html
-import re
 
 # Aplicar estilo personalizado para fundo cinza e destaques bordô e azul marinho
 st.markdown(
@@ -49,6 +48,12 @@ valor_cols = ["A PARTIR DE", "PREÇOS ATÉ", "RENDA NECESSÁRIA"]
 for col in valor_cols:
     df[col] = df[col].apply(lambda x: f"R$ {x:,.2f}".replace(",", "v").replace(".", ",").replace("v", "."))
 
+# Adicionar coluna de link para Google Maps
+df["LINK GOOGLE MAPS"] = df.apply(
+    lambda row: f"https://www.google.com/maps/search/?api=1&query={row['LATITUDE']},{row['LONGITUDE']}" if pd.notna(row.get("LATITUDE")) and pd.notna(row.get("LONGITUDE")) else "",
+    axis=1
+)
+
 st.title("🔎 Pesquisa de Empreendimentos - Habitnet")
 
 # Filtros com dropdowns
@@ -68,32 +73,25 @@ if construtora != "Todas":
 if empreendimento != "Todos":
     df_filtrado = df_filtrado[df_filtrado["EMPREENDIMENTO"] == empreendimento]
 
-# Exibir resultados
+# Exibir resultados com link clicável
+df_exibicao = df_filtrado.copy()
+df_exibicao["LINK GOOGLE MAPS"] = df_exibicao["LINK GOOGLE MAPS"].apply(lambda url: f'<a href="{url}" target="_blank">Abrir no Mapa</a>' if url else "")
+
 st.write(f"### Resultados: {len(df_filtrado)} empreendimento(s) encontrado(s)")
-st.dataframe(df_filtrado, use_container_width=True, height=400)
+st.write(df_exibicao.to_html(escape=False, index=False), unsafe_allow_html=True)
 
 # Criar mapa com marcadores
 if not df_filtrado.empty:
     m = folium.Map(location=[-3.75, -38.5], zoom_start=11)
 
     for _, row in df_filtrado.iterrows():
-        kml_raw = row.get("COORDENADA(DEC)", "")
-        kml_str = str(kml_raw).replace("\n", "").replace("\r", "").strip()
-        if "<coordinates>" in kml_str:
-            coord_match = re.search(r"<coordinates>([^<]+)</coordinates>", kml_str)
-            if coord_match:
-                parts = coord_match.group(1).strip().split(",")
-                if len(parts) >= 2:
-                    try:
-                        lon, lat = float(parts[0]), float(parts[1])
-                        popup_text = f"{row['EMPREENDIMENTO']}<br>{row['ENDEREÇO']} - {row['CIDADE']}"
-                        folium.Marker(location=[lat, lon], popup=popup_text).add_to(m)
-                    except:
-                        st.warning(f"Erro ao converter coordenadas em: {row['EMPREENDIMENTO']}")
-            else:
-                st.warning(f"Coordenada malformada em: {row['EMPREENDIMENTO']}")
-        else:
-            st.warning(f"Sem coordenada válida em: {row['EMPREENDIMENTO']}")
+        try:
+            lat = float(row["LATITUDE"])
+            lon = float(row["LONGITUDE"])
+            popup_text = f"{row['EMPREENDIMENTO']}<br>{row['ENDEREÇO']} - {row['CIDADE']}"
+            folium.Marker(location=[lat, lon], popup=popup_text).add_to(m)
+        except:
+            st.warning(f"Erro ao processar coordenadas para: {row['EMPREENDIMENTO']}")
 
     st.write("### Mapa dos Empreendimentos Filtrados")
     st_folium(m, width=None, height=500)
