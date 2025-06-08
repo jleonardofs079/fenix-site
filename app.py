@@ -126,19 +126,12 @@ if empreendimento != "Todos":
 
 # Formatar coluna ENTREGA para formato 'MMM/AA' (ex: abr/27)
 if "ENTREGA" in df.columns:
-    def formatar_mes_ano(data):
-    try:
-        data = pd.to_datetime(data, errors='coerce')
-        if pd.isna(data):
-            return ""
-        meses = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
-        return f"{meses[data.month - 1]}/{str(data.year)[-2:]}"
-    except:
-        return ""
+    df["ENTREGA"] = pd.to_datetime(df["ENTREGA"], errors="coerce").dt.strftime('%b/%y').str.lower()
 
+
+# Formatar ENTREGA como MM-YYYY
 if "ENTREGA" in df.columns:
-    df["ENTREGA"] = df["ENTREGA"].apply(formatar_mes_ano).str.lower()
-
+    df["ENTREGA"] = pd.to_datetime(df["ENTREGA"], errors="coerce").dt.strftime('%m-%Y')
 
 # Exibir resultados sem LATITUDE e LONGITUDE
 df_exibicao = df_filtrado.drop(columns=["LATITUDE", "LONGITUDE"], errors="ignore").copy()
