@@ -66,5 +66,5 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Reduzir tamanho da fonte e ícone do título
+st.markdown("<h1 style='font-size:1.1em;'>🔎 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos</h1>", unsafe_allow_html=True)
 st.markdown("<h3 style='font-size:1.4em;'>🔎 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos</h3>", unsafe_allow_html=True)
