@@ -1,1 +1,1 @@
-<conteúdo do app.py presente no canvas - omitido por brevidade>
+<o conteúdo completo válido do app.py já foi extraído no passo anterior, portanto pode ser colado diretamente aqui se necessário>
