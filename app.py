@@ -4,7 +4,6 @@ import folium
 from streamlit_folium import st_folium
 from streamlit.components.v1 import html
 import io
-import os
 
 # Estilos adaptáveis para modo claro e escuro
 st.markdown(
@@ -31,13 +30,13 @@ st.markdown(
             width: 100%;
             border-collapse: collapse;
             table-layout: auto;
+            word-wrap: break-word;
+            white-space: nowrap;
         }
         th, td {
             padding: 8px;
             text-align: left;
             border: 1px solid #ccc;
-            white-space: normal;
-            word-break: break-word;
         }
         @media (prefers-color-scheme: dark) {
             body, .stApp {
@@ -66,29 +65,17 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Verificação do arquivo Excel
-excel_path = "MEGATAB_EMPREEND_JUN2025vlight.xlsx"
-if not os.path.exists(excel_path):
-    st.error(f"Arquivo '{excel_path}' não encontrado. Verifique se ele está no diretório do app.")
-    st.stop()
+# (continua no próximo bloco)
 
 # Carregar a base de dados com cache
 @st.cache_data
 def carregar_dados():
-    return pd.read_excel(excel_path)
+    return pd.read_excel("MEGATAB_EMPREEND_JUN2025vlight.xlsx")
 
 df = carregar_dados()
 
 # Padronizar nomes de colunas para evitar erros de digitação ou espaços
 df.columns = df.columns.str.strip().str.upper()
-
-# Renomear coluna VAGA para GARAGEM
-if "VAGA" in df.columns:
-    df = df.rename(columns={"VAGA": "GARAGEM"})
-
-# Formatar coluna ENTREGA como mmm/aa
-if "ENTREGA" in df.columns:
-    df["ENTREGA"] = pd.to_datetime(df["ENTREGA"], errors="coerce")
 
 # Limpeza adicional para filtros
 colunas_filtro = ["CIDADE", "BAIRRO", "CONSTRUTORA", "EMPREENDIMENTO"]
@@ -117,7 +104,7 @@ if "LATITUDE" in df.columns and "LONGITUDE" in df.columns:
         axis=1
     )
 
-st.title("🔎 Pesquisa de Empreendimentos - Habitnet")
+st.title("🔎 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos")
 
 # Filtros com dropdowns
 cidade = st.selectbox("Selecione a Cidade", options=["Todas"] + sorted(df["CIDADE"].dropna().unique().tolist()))
@@ -141,10 +128,6 @@ df_exibicao = df_filtrado.drop(columns=["LATITUDE", "LONGITUDE"], errors="ignore
 if "LINK GOOGLE MAPS" in df_exibicao.columns:
     df_exibicao = df_exibicao.drop(columns=["LINK GOOGLE MAPS"], errors="ignore")
 
-# Formatar ENTREGA na exibição como mmm/aa
-if "ENTREGA" in df_exibicao.columns:
-    df_exibicao["ENTREGA"] = df_exibicao["ENTREGA"].dt.strftime("%b/%y")
-
 st.write(f"### Resultados: {len(df_exibicao)} empreendimento(s) encontrado(s)")
 
 # Botão para exportar tabela
@@ -158,11 +141,10 @@ if not df_exibicao.empty:
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
 
-# Tabela com rolagem horizontal e vertical com quebra de linha restaurada
+# Tabela com rolagem horizontal e vertical
+tabela_html = df_exibicao.to_html(escape=False, index=False)
 st.markdown(
-    f'''<div style="overflow-x: auto; overflow-y: auto; max-height: 500px; border: 1px solid #ccc; padding: 8px">
-    {df_exibicao.to_html(escape=False, index=False)}
-    </div>''',
+    '<div style="overflow-x: auto; overflow-y: auto; max-height: 500px; border: 1px solid #ccc; padding: 8px">' + tabela_html + '</div>',
     unsafe_allow_html=True
 )
 
@@ -174,7 +156,7 @@ if not df_filtrado.empty and "LATITUDE" in df_filtrado.columns and "LONGITUDE" i
         try:
             lat = float(row["LATITUDE"])
             lon = float(row["LONGITUDE"])
-            popup_text = f"{row['EMPREENDIMENTO']}<br>{row['ENDEREÇO']} - {row['CIDADE']}"
+            popup_text = f"{row['EMPREENDIMENTO']}"
             folium.Marker(
                 location=[lat, lon],
                 popup=popup_text,
