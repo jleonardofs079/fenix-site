@@ -141,8 +141,11 @@ if not df_exibicao.empty:
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
 
+
 # Tabela com rolagem horizontal e vertical
+df_exibicao = df_exibicao.rename(columns={"VAGA": "GARAGEM"})
 tabela_html = df_exibicao.to_html(escape=False, index=False)
+
 st.markdown(
     '<div style="overflow-x: auto; overflow-y: auto; max-height: 500px; border: 1px solid #ccc; padding: 8px">' + tabela_html + '</div>',
     unsafe_allow_html=True
