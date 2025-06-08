@@ -3,6 +3,7 @@ import pandas as pd
 import folium
 from streamlit_folium import st_folium
 from streamlit.components.v1 import html
+import io
 
 # Estilos adaptáveis para modo claro e escuro
 st.markdown(
@@ -28,6 +29,9 @@ st.markdown(
         table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
+            word-wrap: break-word;
+            white-space: nowrap;
         }
         th, td {
             padding: 8px;
@@ -60,6 +64,8 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+# (continua no próximo bloco)
 
 # Carregar a base de dados com cache
 @st.cache_data
@@ -124,10 +130,21 @@ if "LINK GOOGLE MAPS" in df_exibicao.columns:
 
 st.write(f"### Resultados: {len(df_exibicao)} empreendimento(s) encontrado(s)")
 
+# Botão para exportar tabela
+buffer = io.BytesIO()
+if not df_exibicao.empty:
+    df_exibicao.to_excel(buffer, index=False)
+    st.download_button(
+        label="📥 Baixar tabela em Excel",
+        data=buffer,
+        file_name="resultado_empreendimentos.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+
 # Tabela com rolagem horizontal e vertical
 tabela_html = df_exibicao.to_html(escape=False, index=False)
 st.markdown(
-    f"""<div style="overflow-x: auto; overflow-y: auto; max-height: 500px; border: 1px solid #ccc; padding: 8px">{tabela_html}</div>""",
+    '<div style="overflow-x: auto; overflow-y: auto; max-height: 500px; border: 1px solid #ccc; padding: 8px">' + tabela_html + '</div>',
     unsafe_allow_html=True
 )
 
