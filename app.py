@@ -11,13 +11,13 @@ st.markdown(
     <style>
         body, .stApp {
             background-color: #f0f0f0;
-            color: #1a237e;
+            color: #003668;
         }
         h1, h2, h3, h4 {
-            color: #1a237e;
+            color: #003668;
         }
         .stSelectbox label, .stDataFrameContainer {
-            color: #3e2723;
+            color: #003668;
         }
         .stButton>button {
             background-color: #7b1fa2;
@@ -121,9 +121,9 @@ fenix_base64 = img_to_base64("fenix.png")
 st.markdown(
     f"""
     <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px;">
-        <img src="data:image/png;base64,{habitnet_base64}" alt="Habitnet Logo" width="80" style="margin-right: 10px;">
-        <h2 style="margin: 0; font-size: 22px;">🔍 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos</h2>
-        <img src="data:image/png;base64,{fenix_base64}" alt="Fênix Logo" width="60" style="margin-left: 10px;">
+        <img src="data:image/png;base64,{habitnet_base64}" alt="Habitnet Logo" width="108" style="margin-right: 10px;">
+        <h2 style="margin: 0 auto; font-size: 22px; text-align: center;">🔍 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos</h2>
+        <img src="data:image/png;base64,{fenix_base64}" alt="Fênix Logo" width="81" style="margin-left: 10px;">
     </div>
     """,
     unsafe_allow_html=True
@@ -155,7 +155,7 @@ if "LINK GOOGLE MAPS" in df_exibicao.columns:
 if "ENTREGA" in df_exibicao.columns:
     df_exibicao["ENTREGA"] = pd.to_datetime(df_exibicao["ENTREGA"], errors="coerce").dt.strftime('%m/%Y')
 
-st.write(f"### Resultados: {len(df_exibicao)} empreendimento(s) encontrado(s)")
+st.markdown(f"<h4 style=\"font-size: 22px; color: #003668;\">Resultados: {len(df_exibicao)} empreendimento(s) encontrado(s)</h4>", unsafe_allow_html=True)
 
 # Botão para exportar tabela
 buffer = io.BytesIO()
@@ -193,7 +193,7 @@ if not df_filtrado.empty and "LATITUDE" in df_filtrado.columns and "LONGITUDE" i
         except (ValueError, TypeError) as e:
             st.warning(f"Erro ao processar coordenadas para: {row['EMPREENDIMENTO']}")
 
-    st.write("### Mapa dos Empreendimentos Filtrados")
+    st.markdown("<h4 style=\"font-size: 22px;\">Mapa dos Empreendimentos Filtrados</h4>", unsafe_allow_html=True)
     st_folium(m, width=None, height=500)
 else:
     st.info("Nenhum empreendimento com coordenadas disponíveis para exibir no mapa.")
