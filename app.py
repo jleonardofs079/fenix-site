@@ -66,11 +66,5 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Exibir cabeçalho com logotipos e título
-col1, col2, col3 = st.columns([1, 6, 1])
-with col1:
-    st.image("habitnet.png", width=60)
-with col2:
-    st.markdown("<div style='text-align: center; font-size: 1.1em; font-weight: bold;'>🔎 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos</div>", unsafe_allow_html=True)
-with col3:
-    st.image("fenix.png", width=60)
+st.markdown("<h1 style='font-size:1.1em;'>🔎 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos</h1>", unsafe_allow_html=True)
+st.markdown("<h3 style='font-size:1.4em;'>🔎 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos</h3>", unsafe_allow_html=True)
