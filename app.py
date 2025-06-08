@@ -104,7 +104,7 @@ if "LATITUDE" in df.columns and "LONGITUDE" in df.columns:
         axis=1
     )
 
-st.title("🔎 Pesquisa de Empreendimentos - Habitnet")
+st.title("🔎 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos")
 
 # Filtros com dropdowns
 cidade = st.selectbox("Selecione a Cidade", options=["Todas"] + sorted(df["CIDADE"].dropna().unique().tolist()))
