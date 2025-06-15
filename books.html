@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>🔍 Habitnet - Equipe Fênix - Pesquisa de Books</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      color: #003668;
+      padding: 20px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+    header img {
+      height: 94px;
+      margin: 0 20px;
+    }
+    h1 {
+      font-size: 24px;
+      color: #9B1113;
+      margin: 0;
+      text-align: center;
+    }
+    #searchBox {
+      width: 100%;
+      max-width: 500px;
+      padding: 10px;
+      font-size: 16px;
+      margin: 0 auto 20px;
+      display: block;
+    }
+    .result {
+      margin-top: 10px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .result a {
+      text-decoration: none;
+      color: #003668;
+      font-weight: bold;
+      display: block;
+      padding: 6px;
+      background: white;
+      margin-bottom: 6px;
+      border-left: 5px solid #9B1113;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="Habitnet_hor.png" alt="Habitnet" />
+    <h1>🔍 Habitnet - Equipe Fênix - Pesquisa de Books</h1>
+    <img src="fenix.png" alt="Fênix" />
+  </header>
+
+  <input type="text" id="searchBox" placeholder="Digite o nome do empreendimento..." onkeyup="filtrarResultados()" />
+
+  <div id="resultados" class="result"></div>
+
+  <script>
+    const books = [{'Nome do Empreendimento': 'CANOPUS - Gran Village Caucaia III', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/15pQLRgpKzXTZdHjFhxB1VOhgdmBN_W3V/view?usp=drive_link'}, {'Nome do Empreendimento': 'CANOPUS - Gran Village Eusébio III', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1ndE-43tWNQsCZ5N05jJJ8lNNDzjRL-nV/view?usp=drive_link'}, {'Nome do Empreendimento': 'CANOPUS - Gran Village Maracanaú III', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1KFb-TgLxsN2wqarPXjLC-iqaRTn6Qqcv/view?usp=drive_link'}, {'Nome do Empreendimento': 'CR DUARTE - Ápice Messejana', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1FpLu4jv3kHoQjf_LZ-NICmzXeJ3Ge-VK/view?usp=drive_link'}, {'Nome do Empreendimento': 'CR DUARTE - Smart Pop', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1EstoQRriQ-25mFxBXSDKMZLinSoJqC6F/view?usp=drive_link'}, {'Nome do Empreendimento': 'DIRECIONAL - Viva Vida Mandacarú', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1Ja37M4WFn-0U4924q1Pi5_LLXgtiNX3k/view?usp=drive_link'}, {'Nome do Empreendimento': 'DIRECIONAL - Viva Vida Siqueira', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1DAh5yELXlLuNoRv1GVAGMts-WM9ibPU5/view?usp=drive_link'}, {'Nome do Empreendimento': 'DIRECIONAL - Viva Vida Tropical', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1AclRpO2NdsDrvhkLh5cOKjhF4JPFTBVO/view?usp=drive_link'}, {'Nome do Empreendimento': 'ENGEPLAN - Apê Messejana', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1Jqvc4n7Wu8U9W62LscQKeFgHhM63jMzB/view?usp=drive_link'}, {'Nome do Empreendimento': 'ENGEPLAN - Apê Messejana 2', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1xOrwDItqBXXeL-yzv15z-M-_xCXeU-WR/view?usp=drive_link'}, {'Nome do Empreendimento': 'ENGEPLAN - Stay One', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1fAR4Wk-hlvJWySQMY_KGjec7QM3JUHpV/view?usp=drive_link'}, {'Nome do Empreendimento': 'MONTENEGRO - Village Di Cavalcanti', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1TYVMftCyFmMJ16Yx50PCIS1JMuItGuEL/view?usp=drive_link'}, {'Nome do Empreendimento': 'MONTEPLAN - Bella Vitta', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1fgj0FaShooPZBPtDWqCXGlG-imI_oRab/view?usp=drive_link'}, {'Nome do Empreendimento': 'MRV - Residencial La Serena', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1m_hU-dXqPK2C2X8PSSQokk1PxQhcplDU/view?usp=drive_link'}, {'Nome do Empreendimento': 'MRV - Residencial Mandacarú', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1L81WpwTbCwQBWhll0-Md5BuokysNT3Us/view?usp=drive_link'}, {'Nome do Empreendimento': 'MRV - Residencial Valparaíso', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/15fA8h47j2uTZhiGXwI3ULUL-_G-w3Xd9/view?usp=drive_link'}, {'Nome do Empreendimento': 'MRV - Torre do Mar', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1EnbXZDYSpDvNV5ELywgAcpgpmy3BMDPf/view?usp=drive_link'}, {'Nome do Empreendimento': 'VICTA - Mirante', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1w453eFD97M4n_O0Buxl6_XnpoR8m7P5C/view?usp=drive_link'}, {'Nome do Empreendimento': 'VICTA - Vista Mar', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1uiZpQXjWoFMQFUrVzkRhA522sfQIp_bg/view?usp=drive_link'}, {'Nome do Empreendimento': 'VICTA - Vista Parque', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1eWCPVh_rSOTSvC-uGYxE7iLpXwTuU3nv/view?usp=drive_link'}, {'Nome do Empreendimento': 'VICTA - Vitória Acácia', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1H-QpOEADY_XfgJpz9qmWoTZu96Ms9yBI/view?usp=drive_link'}, {'Nome do Empreendimento': 'VICTA - Vitória Caucaia', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1h9oGc6iVi5LIMIMirjKsHFRripDHz7ET/view?usp=drive_link'}, {'Nome do Empreendimento': 'VICTA - Vitória Eusébio', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1ByrtuZK1SWefEUVzmzPBSqjPS4V07RJF/view?usp=drive_link'}, {'Nome do Empreendimento': 'VICTA - Vitória Maracanaú', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1TIWCWDnWCyhe3zitbEAJk87fEeKHOO5Z/view?usp=drive_link'}, {'Nome do Empreendimento': 'VICTA - Vitória Mondubim', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/10OT1sRe1kbxkdGqWgMgGVSbgR0cCn9gi/view?usp=drive_link'}, {'Nome do Empreendimento': 'RNI - Maracanaú Moradas da Serra', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1mLqzql8MbkqOnP5mgf-QLUFEmB7Xf-Ki/view?usp=drive_link'}, {'Nome do Empreendimento': 'TENDA - Portal da Barra', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1HVnB-ltmpuOsj_J2-oSqV9Wci91RMPqh/view?usp=drive_link'}, {'Nome do Empreendimento': 'TENDA - Parque da Lagoa', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1QJeZIvlZY8DwN1eex-sP9TG2t5xN0eXe/view?usp=drive_link'}, {'Nome do Empreendimento': 'TENDA - Vida Botânica', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1R4lDOAznlEtwfd4CAxcTYsjgurtTMIQ0/view?usp=drive_link'}, {'Nome do Empreendimento': 'TENDA - Farol do Mucuripe', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1YPkHE4Fv1XLNQif0ay3VESyChnPerjIw/view?usp=drive_link'}, {'Nome do Empreendimento': 'TENDA - Paço das Águas', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1aIl0oITcKXTgd04YZ5OiukkO7Tjdu04p/view?usp=drive_link'}, {'Nome do Empreendimento': 'TENDA - Reserva das Garças I', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1Dr_j7nsKjceFJxIstQXgMR0ptPxn4MQW/view?usp=drive_link'}, {'Nome do Empreendimento': 'TENDA - Reserva das Garças II', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1aRkBQrgYdmM_vUVS5opK8b4FeYzLojaV/view?usp=drive_link'}, {'Nome do Empreendimento': 'TENDA - Viva Praia do Futuro', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/1DgJRKMpmAaAj5zt7EhMpC5IhfaHMnapB/view?usp=drive_link'}, {'Nome do Empreendimento': 'TERADELA - Teravila Residence', 'Link do PDF no Google Drive': 'https://drive.google.com/file/d/17YoPF0K36nT5i2lYLyMWnIinBTXuI6sz/view?usp=drive_link'}];
+
+    function filtrarResultados() {
+      const input = document.getElementById('searchBox').value.toLowerCase();
+      const resultados = document.getElementById('resultados');
+      resultados.innerHTML = '';
+
+      const filtrados = books.filter(b => b["Nome do Empreendimento"].toLowerCase().includes(input));
+      filtrados.forEach(b => {
+        const item = document.createElement('div');
+        item.innerHTML = `<a href="${b["Link do PDF no Google Drive"]}" target="_blank">${b["Nome do Empreendimento"]}</a>`;
+        resultados.appendChild(item);
+      });
+    }
+  </script>
+
+</body>
+</html>
