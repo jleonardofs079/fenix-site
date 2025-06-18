@@ -137,18 +137,18 @@ empreendimento = st.selectbox("Selecione o Empreendimento", options=["Todos"] + 
 
 # Aplicar filtros
 df_filtrado = df.copy()
-if cidade != "Todas":
 if cidade:
     df_filtrado = df_filtrado[df_filtrado['CIDADE'].isin(cidade)]
-if bairro != "Todos":
+    df_filtrado = df_filtrado[df_filtrado["CIDADE"] == cidade]
 if bairro:
     df_filtrado = df_filtrado[df_filtrado['BAIRRO'].isin(bairro)]
-if construtora != "Todas":
+    df_filtrado = df_filtrado[df_filtrado["BAIRRO"] == bairro]
 if construtora:
     df_filtrado = df_filtrado[df_filtrado['CONSTRUTORA'].isin(construtora)]
-if empreendimento != "Todos":
+    df_filtrado = df_filtrado[df_filtrado["CONSTRUTORA"] == construtora]
 if empreendimento:
     df_filtrado = df_filtrado[df_filtrado['EMPREENDIMENTO'].isin(empreendimento)]
+    df_filtrado = df_filtrado[df_filtrado["EMPREENDIMENTO"] == empreendimento]
 
 # Exibir resultados sem LATITUDE e LONGITUDE
 df_exibicao = df_filtrado.drop(columns=["LATITUDE", "LONGITUDE"], errors="ignore").copy()
