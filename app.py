@@ -7,18 +7,15 @@ import io
 
 # Estilos adaptáveis para modo claro e escuro
 
-st.markdown(
-    f'''
-    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 10px;">
-        <img src="data:image/png;base64,{habitnet_base64}" alt="Habitnet Logo" style="height: 94px;" />
-        <img src="data:image/png;base64,{fenix_base64}" alt="Fênix Logo" style="height: 94px;" />
-    </div>
-    <h2 style="text-align: center; font-size: 22px; color: #9B1113; margin: 10px 0 20px 0;">
-        🔍 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos
-    </h2>
-    ''',
-    unsafe_allow_html=True
-)
+st.markdown(f"""
+<div style='display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 10px;'>
+    <img src='data:image/png;base64,{habitnet_base64}' alt='Habitnet Logo' style='height: 94px;' />
+    <img src='data:image/png;base64,{fenix_base64}' alt='Fênix Logo' style='height: 94px;' />
+</div>
+<h2 style='text-align: center; font-size: 22px; color: #9B1113; margin: 10px 0 20px 0;'>
+    🔍 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos
+</h2>
+""", unsafe_allow_html=True)
 ,
     unsafe_allow_html=True
 )
