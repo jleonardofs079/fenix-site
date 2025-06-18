@@ -29,6 +29,7 @@ st.markdown(f"""
 <div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 10px;">
     <img src="data:image/png;base64,{habitnet_base64}" alt="Habitnet Logo" style="height: 94px;" />
 st.markdown("""
+st.markdown("""
 <style>
 body, .stApp {
 background-color: #f0f0f0;
@@ -59,6 +60,7 @@ padding: 8px;
 border: 1px solid #555;
 }
 </style>
+""", unsafe_allow_html=True)
 """, unsafe_allow_html=True)
     <img src="data:image/png;base64,{fenix_base64}" alt="Fênix Logo" style="height: 94px;" />
 </div>
