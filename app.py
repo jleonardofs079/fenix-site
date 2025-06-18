@@ -6,145 +6,39 @@ from streamlit.components.v1 import html
 import io
 
 # Estilos adaptáveis para modo claro e escuro
+
 st.markdown(
-    """
-    <style>
-        body, .stApp {
-            background-color: #f0f0f0;
-            color: #003668;
-        }
-        h1, h2, h3, h4 {
-            color: #003668;
-        }
-        .stSelectbox label, .stDataFrameContainer {
-            color: #003668;
-        }
-        .stButton>button {
-            background-color: #7b1fa2;
-            color: white;
-        }
-        .stButton>button:hover {
-            background-color: #512da8;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: auto;
-            word-wrap: break-word;
-            white-space: nowrap;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border: 1px solid #ccc;
-        }
-        @media (prefers-color-scheme: dark) {
-            body, .stApp {
-                background-color: #121212 !important;
-                color: #e0e0e0 !important;
-            }
-            h1, h2, h3, h4 {
-                color: #f0f0f0;
-            }
-            .stSelectbox label, .stDataFrameContainer {
-                color: #f0f0f0;
-            }
-            .stButton>button {
-                background-color: #bb86fc;
-                color: black;
-            }
-            .stButton>button:hover {
-                background-color: #985eff;
-            }
-            th, td {
-                border: 1px solid #555;
-            }
-        }
-    </style>
-    """,
+    f'''
+    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 10px;">
+        <img src="data:image/png;base64,{habitnet_base64}" alt="Habitnet Logo" style="height: 94px;" />
+        <img src="data:image/png;base64,{fenix_base64}" alt="Fênix Logo" style="height: 94px;" />
+    </div>
+    <h2 style="text-align: center; font-size: 22px; color: #9B1113; margin: 10px 0 20px 0;">
+        🔍 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos
+    </h2>
+    ''',
     unsafe_allow_html=True
 )
-
-def formatar_moeda(x):
-    return f"R$ {x:,.2f}".replace(",", "v").replace(".", ",").replace("v", ".")
-
-# Carregar a base de dados com cache
-@st.cache_data(ttl=600)
-def carregar_dados():
-    return pd.read_excel("MEGATAB_EMPREEND_JUN2025vlight.xlsx")
-
-df = carregar_dados()
-
-# Padronizar nomes de colunas para evitar erros de digitação ou espaços
-df.columns = df.columns.str.strip().str.upper()
-df = df.rename(columns={"VAGA": "GARAGEM"})
-
-# Limpeza adicional para filtros
-colunas_filtro = ["CIDADE", "BAIRRO", "CONSTRUTORA", "EMPREENDIMENTO"]
-opcoes_filtro = {
-    col: sorted(df[col].dropna().unique().tolist()) for col in colunas_filtro if col in df.columns
-}
-for col in colunas_filtro:
-    if col in df.columns:
-        df[col] = df[col].astype(str).str.strip()
-
-# Verificar se as colunas LATITUDE e LONGITUDE existem
-if "LATITUDE" in df.columns and "LONGITUDE" in df.columns:
-    for coord in ["LATITUDE", "LONGITUDE"]:
-        df[coord] = pd.to_numeric(df[coord].astype(str).str.replace(",", "."), errors="coerce")
-else:
-    st.error("As colunas 'LATITUDE' e 'LONGITUDE' não foram encontradas na planilha.")
-
-# Formatar colunas de moeda
-valor_cols = ["A PARTIR DE", "PREÇOS ATÉ", "RENDA NECESSÁRIA"]
-for col in valor_cols:
-    if col in df.columns:
-        df[col] = df[col].apply(formatar_moeda)
-
-# Criar coluna VER NO MAPA com link clicável
-if "LATITUDE" in df.columns and "LONGITUDE" in df.columns:
-    df["VER NO MAPA"] = df.apply(
-        lambda row: f'<a href="https://www.google.com/maps/search/?api=1&query={row["LATITUDE"]},{row["LONGITUDE"]}" target="_blank">VER NO MAPA</a>'
-        if pd.notna(row.get("LATITUDE")) and pd.notna(row.get("LONGITUDE")) else "",
-        axis=1
-    )
-
-import base64
-
-def img_to_base64(path):
-    with open(path, "rb") as img_file:
-        return base64.b64encode(img_file.read()).decode()
-
-habitnet_base64 = img_to_base64("Habitnet_hor.png")
-fenix_base64 = img_to_base64("fenix.png")
-
-st.markdown(
-    f"""
-    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px;">
-        <img src="data:image/png;base64,{habitnet_base64}" alt="Habitnet Logo" width="108" style="margin-right: 10px;">
-        <h2 style="margin: 0 auto; font-size: 22px; text-align: center;; color: #9B1113">🔍 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos</h2>
-        <img src="data:image/png;base64,{fenix_base64}" alt="Fênix Logo" width="81" style="margin-left: 10px;">
-    </div>
-    """,
+,
     unsafe_allow_html=True
 )
 
 # Filtros com dropdowns
-cidade = st.selectbox("Selecione a Cidade", options=["Todas"] + opcoes_filtro.get("CIDADE", []))
-bairro = st.selectbox("Selecione o Bairro", options=["Todos"] + opcoes_filtro.get("BAIRRO", []))
-construtora = st.selectbox("Selecione a Construtora", options=["Todas"] + opcoes_filtro.get("CONSTRUTORA", []))
-empreendimento = st.selectbox("Selecione o Empreendimento", options=["Todos"] + opcoes_filtro.get("EMPREENDIMENTO", []))
+cidade = st.multiselect("Selecione a Cidade", options=opcoes_filtro.get("CIDADE", []), default=opcoes_filtro.get("CIDADE", [])))
+bairro = st.multiselect("Selecione o Bairro", options=opcoes_filtro.get("BAIRRO", []), default=opcoes_filtro.get("BAIRRO", [])))
+construtora = st.multiselect("Selecione a Construtora", options=opcoes_filtro.get("CONSTRUTORA", []), default=opcoes_filtro.get("CONSTRUTORA", [])))
+empreendimento = st.multiselect("Selecione o Empreendimento", options=opcoes_filtro.get("EMPREENDIMENTO", []), default=opcoes_filtro.get("EMPREENDIMENTO", [])))
 
 # Aplicar filtros
 df_filtrado = df.copy()
-if cidade != "Todas":
-    df_filtrado = df_filtrado[df_filtrado["CIDADE"] == cidade]
-if bairro != "Todos":
-    df_filtrado = df_filtrado[df_filtrado["BAIRRO"] == bairro]
-if construtora != "Todas":
-    df_filtrado = df_filtrado[df_filtrado["CONSTRUTORA"] == construtora]
-if empreendimento != "Todos":
-    df_filtrado = df_filtrado[df_filtrado["EMPREENDIMENTO"] == empreendimento]
+if cidade:
+    df_filtrado = df_filtrado[df_filtrado["CIDADE"].isin(cidade)]
+if bairro:
+    df_filtrado = df_filtrado[df_filtrado["BAIRRO"].isin(bairro)]
+if construtora:
+    df_filtrado = df_filtrado[df_filtrado["CONSTRUTORA"].isin(construtora)]
+if empreendimento:
+    df_filtrado = df_filtrado[df_filtrado["EMPREENDIMENTO"].isin(empreendimento)]
 
 # Exibir resultados sem LATITUDE e LONGITUDE
 df_exibicao = df_filtrado.drop(columns=["LATITUDE", "LONGITUDE"], errors="ignore").copy()
