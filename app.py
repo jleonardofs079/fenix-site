@@ -130,21 +130,29 @@ st.markdown(
 )
 
 # Filtros com dropdowns
-cidade = st.selectbox("Selecione a Cidade", options=["Todas"] + opcoes_filtro.get("CIDADE", []))
-bairro = st.selectbox("Selecione o Bairro", options=["Todos"] + opcoes_filtro.get("BAIRRO", []))
-construtora = st.selectbox("Selecione a Construtora", options=["Todas"] + opcoes_filtro.get("CONSTRUTORA", []))
-empreendimento = st.selectbox("Selecione o Empreendimento", options=["Todos"] + opcoes_filtro.get("EMPREENDIMENTO", []))
+cidade = st.multiselect("Selecione a Cidade", options=sorted(df["CIDADE"].dropna().unique()))
+bairro = st.multiselect("Selecione o Bairro", options=sorted(df["BAIRRO"].dropna().unique()))
+construtora = st.multiselect("Selecione a Construtora", options=sorted(df["CONSTRUTORA"].dropna().unique()))
+empreendimento = st.multiselect("Selecione o Empreendimento", options=sorted(df["EMPREENDIMENTO"].dropna().unique()))
 
 # Aplicar filtros
 df_filtrado = df.copy()
-if cidade != "Todas":
-    df_filtrado = df_filtrado[df_filtrado["CIDADE"] == cidade]
-if bairro != "Todos":
-    df_filtrado = df_filtrado[df_filtrado["BAIRRO"] == bairro]
-if construtora != "Todas":
-    df_filtrado = df_filtrado[df_filtrado["CONSTRUTORA"] == construtora]
-if empreendimento != "Todos":
-    df_filtrado = df_filtrado[df_filtrado["EMPREENDIMENTO"] == empreendimento]
+if cidade:
+    df_filtrado = df_filtrado[df_filtrado["CIDADE"].isin(cidade)]
+if cidade:
+    df_filtrado = df_filtrado[df_filtrado['CIDADE'].isin(cidade)]
+if bairro:
+    df_filtrado = df_filtrado[df_filtrado["BAIRRO"].isin(bairro)]
+if bairro:
+    df_filtrado = df_filtrado[df_filtrado['BAIRRO'].isin(bairro)]
+if construtora:
+    df_filtrado = df_filtrado[df_filtrado["CONSTRUTORA"].isin(construtora)]
+if construtora:
+    df_filtrado = df_filtrado[df_filtrado['CONSTRUTORA'].isin(construtora)]
+if empreendimento:
+    df_filtrado = df_filtrado[df_filtrado["EMPREENDIMENTO"].isin(empreendimento)]
+if empreendimento:
+    df_filtrado = df_filtrado[df_filtrado['EMPREENDIMENTO'].isin(empreendimento)]
 
 # Exibir resultados sem LATITUDE e LONGITUDE
 df_exibicao = df_filtrado.drop(columns=["LATITUDE", "LONGITUDE"], errors="ignore").copy()
