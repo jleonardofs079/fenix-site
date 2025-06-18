@@ -168,6 +168,7 @@ st.markdown(f"""
 </h2>
 """, unsafe_allow_html=True)
 
+st.markdown("""
 <style>
 body, .stApp {
 background-color: #f0f0f0;
@@ -221,6 +222,7 @@ border: 1px solid #555;
 }
 }
 </style>
+""", unsafe_allow_html=True)
 """, unsafe_allow_html=True)
     """,
 )
@@ -546,6 +548,7 @@ st.markdown(f"""
 </h2>
 """, unsafe_allow_html=True)
 
+st.markdown("""
 <style>
 body, .stApp {
 background-color: #f0f0f0;
@@ -599,6 +602,7 @@ border: 1px solid #555;
 }
 }
 </style>
+""", unsafe_allow_html=True)
 """, unsafe_allow_html=True)
     """,
 )
