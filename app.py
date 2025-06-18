@@ -17,59 +17,59 @@ st.markdown(f"""
 </h2>
 """, unsafe_allow_html=True)
 
-    <style>
-        body, .stApp {
-            background-color: #f0f0f0;
-            color: #003668;
-        }
-        h1, h2, h3, h4 {
-            color: #003668;
-        }
-        .stSelectbox label, .stDataFrameContainer {
-            color: #003668;
-        }
-        .stButton>button {
-            background-color: #7b1fa2;
-            color: white;
-        }
-        .stButton>button:hover {
-            background-color: #512da8;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: auto;
-            word-wrap: break-word;
-            white-space: nowrap;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border: 1px solid #ccc;
-        }
-        @media (prefers-color-scheme: dark) {
-            body, .stApp {
-                background-color: #121212 !important;
-                color: #e0e0e0 !important;
-            }
-            h1, h2, h3, h4 {
-                color: #f0f0f0;
-            }
-            .stSelectbox label, .stDataFrameContainer {
-                color: #f0f0f0;
-            }
-            .stButton>button {
-                background-color: #bb86fc;
-                color: black;
-            }
-            .stButton>button:hover {
-                background-color: #985eff;
-            }
-            th, td {
-                border: 1px solid #555;
-            }
-        }
-    </style>
+<style>
+body, .stApp {
+background-color: #f0f0f0;
+color: #003668;
+}
+h1, h2, h3, h4 {
+color: #003668;
+}
+.stSelectbox label, .stDataFrameContainer {
+color: #003668;
+}
+.stButton>button {
+background-color: #7b1fa2;
+color: white;
+}
+.stButton>button:hover {
+background-color: #512da8;
+}
+table {
+width: 100%;
+border-collapse: collapse;
+table-layout: auto;
+word-wrap: break-word;
+white-space: nowrap;
+}
+th, td {
+padding: 8px;
+text-align: left;
+border: 1px solid #ccc;
+}
+@media (prefers-color-scheme: dark) {
+body, .stApp {
+background-color: #121212 !important;
+color: #e0e0e0 !important;
+}
+h1, h2, h3, h4 {
+color: #f0f0f0;
+}
+.stSelectbox label, .stDataFrameContainer {
+color: #f0f0f0;
+}
+.stButton>button {
+background-color: #bb86fc;
+color: black;
+}
+.stButton>button:hover {
+background-color: #985eff;
+}
+th, td {
+border: 1px solid #555;
+}
+}
+</style>
     """,
     unsafe_allow_html=True
 )
