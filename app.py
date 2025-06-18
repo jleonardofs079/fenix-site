@@ -42,12 +42,14 @@ border-collapse: collapse;
 table-layout: auto;
 word-wrap: break-word;
 white-space: nowrap;
+st.markdown("""
 }
 th, td {
 padding: 8px;
 text-align: left;
 border: 1px solid #ccc;
 }
+""", unsafe_allow_html=True)
 @media (prefers-color-scheme: dark) {
 body, .stApp {
 background-color: #121212 !important;
