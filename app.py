@@ -16,15 +16,12 @@ st.markdown(f"""
     🔍 Habitnet - Equipe Fênix - Pesquisa de Empreendimentos
 </h2>
 """, unsafe_allow_html=True)
-,
-    unsafe_allow_html=True
-)
 
 # Filtros com dropdowns
-cidade = st.multiselect("Selecione a Cidade", options=opcoes_filtro.get("CIDADE", []), default=opcoes_filtro.get("CIDADE", [])))
-bairro = st.multiselect("Selecione o Bairro", options=opcoes_filtro.get("BAIRRO", []), default=opcoes_filtro.get("BAIRRO", [])))
-construtora = st.multiselect("Selecione a Construtora", options=opcoes_filtro.get("CONSTRUTORA", []), default=opcoes_filtro.get("CONSTRUTORA", [])))
-empreendimento = st.multiselect("Selecione o Empreendimento", options=opcoes_filtro.get("EMPREENDIMENTO", []), default=opcoes_filtro.get("EMPREENDIMENTO", [])))
+cidade = st.multiselect("Selecione a Cidade", options=opcoes_filtro.get("CIDADE", []), default=opcoes_filtro.get("CIDADE", [])
+bairro = st.multiselect("Selecione o Bairro", options=opcoes_filtro.get("BAIRRO", []), default=opcoes_filtro.get("BAIRRO", [])
+construtora = st.multiselect("Selecione a Construtora", options=opcoes_filtro.get("CONSTRUTORA", []), default=opcoes_filtro.get("CONSTRUTORA", [])
+empreendimento = st.multiselect("Selecione o Empreendimento", options=opcoes_filtro.get("EMPREENDIMENTO", []), default=opcoes_filtro.get("EMPREENDIMENTO", [])
 
 # Aplicar filtros
 df_filtrado = df.copy()
