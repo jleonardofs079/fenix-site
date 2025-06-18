@@ -28,10 +28,10 @@ st.markdown(f"""
 
 # Filtros com dropdowns
 opcoes_filtro = {
-    "CIDADE": sorted(df_exibicao["CIDADE"].dropna().unique()),
-    "BAIRRO": sorted(df_exibicao["BAIRRO"].dropna().unique()),
-    "CONSTRUTORA": sorted(df_exibicao["CONSTRUTORA"].dropna().unique()),
-    "EMPREENDIMENTO": sorted(df_exibicao["EMPREENDIMENTO"].dropna().unique()),
+    "CIDADE": sorted(df["CIDADE"].dropna().unique()),
+    "BAIRRO": sorted(df["BAIRRO"].dropna().unique()),
+    "CONSTRUTORA": sorted(df["CONSTRUTORA"].dropna().unique()),
+    "EMPREENDIMENTO": sorted(df["EMPREENDIMENTO"].dropna().unique()),
 }
 cidade = st.multiselect("Selecione a Cidade", options=opcoes_filtro.get("CIDADE", []), default=opcoes_filtro.get("CIDADE", []))
 bairro = st.multiselect("Selecione o Bairro", options=opcoes_filtro.get("BAIRRO", []), default=opcoes_filtro.get("BAIRRO", []))
@@ -56,7 +56,7 @@ if "LINK GOOGLE MAPS" in df_exibicao.columns:
 
 # Formatar ENTREGA como mm/aaaa
 if "ENTREGA" in df_exibicao.columns:
-    df_exibicao["ENTREGA"] = pd.to_datetime(df_exibicao["ENTREGA"], errors="coerce").dt.strftime('%m/%Y')
+    df["ENTREGA"] = pd.to_datetime(df["ENTREGA"], errors="coerce").dt.strftime('%m/%Y')
 
 st.markdown(f"<h4 style=\"font-size: 22px; color: #003668;\">Resultados: {len(df_exibicao)} empreendimento(s) encontrado(s)</h4>", unsafe_allow_html=True)
 
