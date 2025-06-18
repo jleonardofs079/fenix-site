@@ -1,34 +1,3 @@
-import streamlit as st
-import pandas as pd
-import folium
-from streamlit_folium import st_folium
-from streamlit.components.v1 import html
-import io
-
-# Estilos adaptáveis para modo claro e escuro
-st.markdown(f"""
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 10px;">
-    <img src="data:image/png;base64,{habitnet_base64}" alt="Habitnet Logo" style="height: 94px;" />
-    <img src="data:image/png;base64,{fenix_base64}" alt="Fênix Logo" style="height: 94px;" />
-</div>
-<h2 style="text-align: center; font-size: 22px; color: #9B1113; margin: 10px 0 20px 0;">
-    Habitnet - Equipe Fênix - Pesquisa de Empreendimentos
-</h2>
-""", unsafe_allow_html=True)
-import streamlit as st
-import pandas as pd
-import folium
-from streamlit_folium import st_folium
-from streamlit.components.v1 import html
-import io
-
-# Estilos adaptáveis para modo claro e escuro
-st.markdown(f"""
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 10px;">
-    <img src="data:image/png;base64,{habitnet_base64}" alt="Habitnet Logo" style="height: 94px;" />
-st.markdown("""
 st.markdown("""
 <style>
 body, .stApp {
@@ -60,50 +29,6 @@ padding: 8px;
 border: 1px solid #555;
 }
 </style>
-""", unsafe_allow_html=True)
-""", unsafe_allow_html=True)
-    <img src="data:image/png;base64,{fenix_base64}" alt="Fênix Logo" style="height: 94px;" />
-</div>
-<h2 style="text-align: center; font-size: 22px; color: #9B1113; margin: 10px 0 20px 0;">
-    Habitnet - Equipe Fênix - Pesquisa de Empreendimentos
-</h2>
-import streamlit as st
-import pandas as pd
-import folium
-from streamlit_folium import st_folium
-from streamlit.components.v1 import html
-import io
-
-# Estilos adaptáveis para modo claro e escuro
-st.markdown(f"""
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 10px;">
-    <img src="data:image/png;base64,{habitnet_base64}" alt="Habitnet Logo" style="height: 94px;" />
-    <img src="data:image/png;base64,{fenix_base64}" alt="Fênix Logo" style="height: 94px;" />
-</div>
-<h2 style="text-align: center; font-size: 22px; color: #9B1113; margin: 10px 0 20px 0;">
-    Habitnet - Equipe Fênix - Pesquisa de Empreendimentos
-</h2>
-""", unsafe_allow_html=True)
-import streamlit as st
-import pandas as pd
-import folium
-from streamlit_folium import st_folium
-from streamlit.components.v1 import html
-import io
-
-# Estilos adaptáveis para modo claro e escuro
-st.markdown(f"""
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 10px;">
-    <img src="data:image/png;base64,{habitnet_base64}" alt="Habitnet Logo" style="height: 94px;" />
-    <img src="data:image/png;base64,{fenix_base64}" alt="Fênix Logo" style="height: 94px;" />
-</div>
-<h2 style="text-align: center; font-size: 22px; color: #9B1113; margin: 10px 0 20px 0;">
-    Habitnet - Equipe Fênix - Pesquisa de Empreendimentos
-</h2>
-""", unsafe_allow_html=True)
-
 <style>
 body, .stApp {
 background-color: #f0f0f0;
@@ -222,6 +147,136 @@ border: 1px solid #555;
 }
 }
 </style>
+<style>
+body, .stApp {
+background-color: #f0f0f0;
+color: #003668;
+}
+h1, h2, h3, h4 {
+color: #003668;
+}
+.stSelectbox label, .stDataFrameContainer {
+color: #003668;
+}
+.stButton>button {
+background-color: #7b1fa2;
+color: white;
+}
+.stButton>button:hover {
+background-color: #512da8;
+}
+table {
+width: 100%;
+border-collapse: collapse;
+table-layout: auto;
+word-wrap: break-word;
+white-space: nowrap;
+}
+th, td {
+padding: 8px;
+text-align: left;
+border: 1px solid #ccc;
+}
+@media (prefers-color-scheme: dark) {
+body, .stApp {
+background-color: #121212 !important;
+color: #e0e0e0 !important;
+}
+h1, h2, h3, h4 {
+color: #f0f0f0;
+}
+.stSelectbox label, .stDataFrameContainer {
+color: #f0f0f0;
+}
+.stButton>button {
+background-color: #bb86fc;
+color: black;
+}
+.stButton>button:hover {
+background-color: #985eff;
+}
+th, td {
+border: 1px solid #555;
+}
+}
+</style>
+""", unsafe_allow_html=True)
+import streamlit as st
+import pandas as pd
+import folium
+from streamlit_folium import st_folium
+from streamlit.components.v1 import html
+import io
+
+# Estilos adaptáveis para modo claro e escuro
+st.markdown(f"""
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 10px;">
+    <img src="data:image/png;base64,{habitnet_base64}" alt="Habitnet Logo" style="height: 94px;" />
+    <img src="data:image/png;base64,{fenix_base64}" alt="Fênix Logo" style="height: 94px;" />
+</div>
+<h2 style="text-align: center; font-size: 22px; color: #9B1113; margin: 10px 0 20px 0;">
+    Habitnet - Equipe Fênix - Pesquisa de Empreendimentos
+</h2>
+""", unsafe_allow_html=True)
+import streamlit as st
+import pandas as pd
+import folium
+from streamlit_folium import st_folium
+from streamlit.components.v1 import html
+import io
+
+# Estilos adaptáveis para modo claro e escuro
+st.markdown(f"""
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 10px;">
+    <img src="data:image/png;base64,{habitnet_base64}" alt="Habitnet Logo" style="height: 94px;" />
+st.markdown("""
+st.markdown("""
+""", unsafe_allow_html=True)
+""", unsafe_allow_html=True)
+    <img src="data:image/png;base64,{fenix_base64}" alt="Fênix Logo" style="height: 94px;" />
+</div>
+<h2 style="text-align: center; font-size: 22px; color: #9B1113; margin: 10px 0 20px 0;">
+    Habitnet - Equipe Fênix - Pesquisa de Empreendimentos
+</h2>
+import streamlit as st
+import pandas as pd
+import folium
+from streamlit_folium import st_folium
+from streamlit.components.v1 import html
+import io
+
+# Estilos adaptáveis para modo claro e escuro
+st.markdown(f"""
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 10px;">
+    <img src="data:image/png;base64,{habitnet_base64}" alt="Habitnet Logo" style="height: 94px;" />
+    <img src="data:image/png;base64,{fenix_base64}" alt="Fênix Logo" style="height: 94px;" />
+</div>
+<h2 style="text-align: center; font-size: 22px; color: #9B1113; margin: 10px 0 20px 0;">
+    Habitnet - Equipe Fênix - Pesquisa de Empreendimentos
+</h2>
+""", unsafe_allow_html=True)
+import streamlit as st
+import pandas as pd
+import folium
+from streamlit_folium import st_folium
+from streamlit.components.v1 import html
+import io
+
+# Estilos adaptáveis para modo claro e escuro
+st.markdown(f"""
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 10px;">
+    <img src="data:image/png;base64,{habitnet_base64}" alt="Habitnet Logo" style="height: 94px;" />
+    <img src="data:image/png;base64,{fenix_base64}" alt="Fênix Logo" style="height: 94px;" />
+</div>
+<h2 style="text-align: center; font-size: 22px; color: #9B1113; margin: 10px 0 20px 0;">
+    Habitnet - Equipe Fênix - Pesquisa de Empreendimentos
+</h2>
+""", unsafe_allow_html=True)
+
 """, unsafe_allow_html=True)
 """, unsafe_allow_html=True)
     """,
@@ -549,59 +604,6 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 st.markdown("""
-<style>
-body, .stApp {
-background-color: #f0f0f0;
-color: #003668;
-}
-h1, h2, h3, h4 {
-color: #003668;
-}
-.stSelectbox label, .stDataFrameContainer {
-color: #003668;
-}
-.stButton>button {
-background-color: #7b1fa2;
-color: white;
-}
-.stButton>button:hover {
-background-color: #512da8;
-}
-table {
-width: 100%;
-border-collapse: collapse;
-table-layout: auto;
-word-wrap: break-word;
-white-space: nowrap;
-}
-th, td {
-padding: 8px;
-text-align: left;
-border: 1px solid #ccc;
-}
-@media (prefers-color-scheme: dark) {
-body, .stApp {
-background-color: #121212 !important;
-color: #e0e0e0 !important;
-}
-h1, h2, h3, h4 {
-color: #f0f0f0;
-}
-.stSelectbox label, .stDataFrameContainer {
-color: #f0f0f0;
-}
-.stButton>button {
-background-color: #bb86fc;
-color: black;
-}
-.stButton>button:hover {
-background-color: #985eff;
-}
-th, td {
-border: 1px solid #555;
-}
-}
-</style>
 """, unsafe_allow_html=True)
 """, unsafe_allow_html=True)
     """,
