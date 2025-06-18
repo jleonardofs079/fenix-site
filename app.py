@@ -7,6 +7,15 @@ import io
 
 # Estilos adaptáveis para modo claro e escuro
 
+import base64
+
+def carregar_logo_base64(caminho):
+    with open(caminho, "rb") as f:
+        return base64.b64encode(f.read()).decode("utf-8")
+
+habitnet_base64 = carregar_logo_base64("Habitnet_hor.png")
+fenix_base64 = carregar_logo_base64("fenix.png")
+
 st.markdown(f"""
 <div style='display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 10px;'>
     <img src='data:image/png;base64,{habitnet_base64}' alt='Habitnet Logo' style='height: 94px;' />
