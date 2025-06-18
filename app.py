@@ -27,16 +27,11 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # Filtros com dropdowns
-opcoes_filtro = {
     "CIDADE": sorted(df["CIDADE"].dropna().unique()),
     "BAIRRO": sorted(df["BAIRRO"].dropna().unique()),
     "CONSTRUTORA": sorted(df["CONSTRUTORA"].dropna().unique()),
     "EMPREENDIMENTO": sorted(df["EMPREENDIMENTO"].dropna().unique()),
 }
-cidade = st.multiselect("Selecione a Cidade", options=opcoes_filtro.get("CIDADE", []), default=opcoes_filtro.get("CIDADE", []))
-bairro = st.multiselect("Selecione o Bairro", options=opcoes_filtro.get("BAIRRO", []), default=opcoes_filtro.get("BAIRRO", []))
-construtora = st.multiselect("Selecione a Construtora", options=opcoes_filtro.get("CONSTRUTORA", []), default=opcoes_filtro.get("CONSTRUTORA", []))
-empreendimento = st.multiselect("Selecione o Empreendimento", options=opcoes_filtro.get("EMPREENDIMENTO", []), default=opcoes_filtro.get("EMPREENDIMENTO", []))
 
 # Aplicar filtros
 df_filtrado = df.copy()
