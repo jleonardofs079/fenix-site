@@ -7,7 +7,6 @@ import io
 
 # Estilos adaptáveis para modo claro e escuro
 st.markdown(
-    """
     <style>
         body, .stApp {
             background-color: #f0f0f0;
@@ -123,7 +122,6 @@ from streamlit.components.v1 import html
 import io
 
 # Estilos adaptáveis para modo claro e escuro
-    """
     <style>
         body, .stApp {
             background-color: #f0f0f0;
