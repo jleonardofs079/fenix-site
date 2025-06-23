@@ -83,11 +83,11 @@ def carregar_dados():
 df = carregar_dados()
 
 # Substituir coluna 'COMPATÍVEL MC' por 'BOOK' com hiperlink e ocultar 'ENDEREÇO BOOK'
-    # Corrigir colunas duplicadas após merge
-    if "BOOK_x" in df.columns:
-        df = df.drop(columns=["BOOK_x"])
-    if "BOOK_y" in df.columns:
-        df = df.rename(columns={"BOOK_y": "BOOK"})
+# Corrigir colunas duplicadas após merge
+if "BOOK_x" in df.columns:
+    df = df.drop(columns=["BOOK_x"])
+if "BOOK_y" in df.columns:
+    df = df.rename(columns={"BOOK_y": "BOOK"})
 
 if "ENDEREÇO BOOK" in df.columns and "EMPREENDIMENTO" in df.columns:
     df = df.merge(df_books_filtrado[["EMPREENDIMENTO", "BOOK"]], on="EMPREENDIMENTO", how="left")
