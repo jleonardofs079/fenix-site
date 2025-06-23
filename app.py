@@ -69,11 +69,27 @@ def formatar_moeda(x):
     return f"R$ {x:,.2f}".replace(",", "v").replace(".", ",").replace("v", ".")
 
 # Carregar a base de dados com cache
+df_books_filtrado = pd.read_excel("MEGATAB_EMPREEND_JUN2025vlight.xlsx")
+df_books_filtrado.columns = df_books_filtrado.columns.str.strip().str.upper()
+df_books_filtrado = df_books_filtrado[["EMPREENDIMENTO", "ENDEREÇO BOOK"]].dropna()
+df_books_filtrado["BOOK"] = df_books_filtrado["ENDEREÇO BOOK"].apply(
+    lambda url: f'<a href="{url}" target="_blank">BAIXAR BOOK</a>'
+)
+
 @st.cache_data(ttl=600)
 def carregar_dados():
     return pd.read_excel("MEGATAB_EMPREEND_JUN2025vlight.xlsx")
 
 df = carregar_dados()
+
+# Substituir coluna 'COMPATÍVEL MC' por 'BOOK' com hiperlink e ocultar 'ENDEREÇO BOOK'
+if "ENDEREÇO BOOK" in df.columns and "EMPREENDIMENTO" in df.columns:
+    df = df.merge(df_books_filtrado[["EMPREENDIMENTO", "BOOK"]], on="EMPREENDIMENTO", how="left")
+    if "COMPATÍVEL MC" in df.columns:
+        df = df.drop(columns=["COMPATÍVEL MC"])
+    if "ENDEREÇO BOOK" in df.columns:
+        df = df.drop(columns=["ENDEREÇO BOOK"])
+
 
 # Padronizar nomes de colunas para evitar erros de digitação ou espaços
 df.columns = df.columns.str.strip().str.upper()
