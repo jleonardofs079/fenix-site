@@ -38,14 +38,7 @@ st.markdown(
             text-align: left;
             border: 1px solid #ccc;
         }
-        @media (prefers-color-scheme: dark) {
-            body, .stApp {
-                background-color: #121212 !important;
-                color: #e0e0e0 !important;
-            }
-            h1, h2, h3, h4 {
-                color: #f0f0f0;
-            }
+        
             .stSelectbox label, .stDataFrameContainer {
                 color: #f0f0f0;
             }
